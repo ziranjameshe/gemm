@@ -15,6 +15,7 @@ B = np.random.randn(N, N).astype(np.float32)
 
 # floating point operation
 flop = N * N * 2 * N
+print(f'Numpy Python: {N} * {N} Matrix Multiplication')
 print(f'{flop / 1e9:.2f} GFLOP')
 
 for i in range(2):
@@ -23,3 +24,10 @@ for i in range(2):
     end_time   = time.monotonic()
     used_time  = end_time - start_time
     print(f'{flop / used_time / 1e9:.2f} GFLOP/S')
+
+print()
+
+with open("/tmp/gemm_data", "wb") as write_file:
+    write_file.write(A.data)
+    write_file.write(B.data)
+    write_file.write(C.data)
