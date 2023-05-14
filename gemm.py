@@ -3,15 +3,30 @@
 import time
 import os
 
-# os.environ['OPENBLAS_NUM_THREADS'] = '1'
+os.environ['OPENBLAS_NUM_THREADS'] = '1'
 import numpy as np
 
-N = 1024
+N     = 1024
+# DEBUG = True
 
-# N^2
-A = np.random.randn(N, N).astype(np.float32)
-# N^2
-B = np.random.randn(N, N).astype(np.float32)
+if 'DEBUG' in locals() and DEBUG == True:
+    # N^2
+    A = np.full((N, N), 1).astype(np.float32)
+    # N^2
+    B = np.full((N, N), 1).astype(np.float32)
+    count = 0
+    for y in range(N):
+        for x in range(N):
+            A[y][x] = count
+            B[y][x] = count
+            count += 1
+    print(A)
+
+else:
+    # N^2
+    A = np.random.randn(N, N).astype(np.float32)
+    # N^2
+    B = np.random.randn(N, N).astype(np.float32)
 
 # floating point operation
 flop = N * N * 2 * N

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <simd/matrix.h>
+// #include </Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers/vDSP.h>
 
 #include "utility.h"
 #include "algo/simple_matrix_multiplication.h"
@@ -23,21 +24,21 @@ int main() {
     printf("%.2f GFLOP\n\n", flop / 1e9);
 
     // printf("Simple Matrix Multiplication\n");
-    // for (int i = 0; i < 2; i++){
+    // for (int i = 0; i < NUM_TEST; i++) {
     //     read_matrix_data(A, B, C, C_python);
     //     simple_matrix_multiplication(A, B, C);
     // }
     // validate_results(C, C_python);
 
     printf("Block Matrix Multiplication\n");
-    for (int i = 0; i < 2; i++){
+    for (int i = 0; i < NUM_TEST; i++) {
         read_matrix_data(A, B, C, C_python);
         block_matrix_multiplication(A, B, C);
     }
     validate_results(C, C_python);
 
     printf("Apple Silicon AMX Matrix Multiplication\n");
-    for (int i = 0; i < 2; i++){
+    for (int i = 0; i < NUM_TEST; i++) {
         read_matrix_data(A, B, C, C_python);
         apple_silicon_AMX_matrix_multiplication(A, B, C);
     }
