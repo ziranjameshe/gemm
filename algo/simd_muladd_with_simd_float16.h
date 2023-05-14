@@ -18,20 +18,14 @@ void simd_muladd_with_simd_float16(float A[N][N], float B[N][N], float C[N][N]) 
 
                 // Load C_f16
                 for (int x = simd_x; x < simd_x + SIMD_SIZE; x++) {
-
                     C_f16[x - simd_x] = C[y][x];
-
                 }
 
                 // Load A_f16, B_f16
                 for (int k = simd_k; k < simd_k + SIMD_SIZE; k++) {
-
                     for (int x = simd_x; x < simd_x + SIMD_SIZE; x++) {
-
                         A_f16[x - simd_x] = A[y][k];
-
                         B_f16[x - simd_x] = B[k][x];
-
                     }
 
                     // Compute
@@ -40,9 +34,7 @@ void simd_muladd_with_simd_float16(float A[N][N], float B[N][N], float C[N][N]) 
 
                 // Store
                 for (int x = simd_x; x < simd_x + SIMD_SIZE; x++) {
-
                     C[y][x] = C_f16[x - simd_x];
-
                 }
 
             }
