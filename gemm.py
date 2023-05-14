@@ -28,7 +28,7 @@ else:
 
 # floating point operation
 flop = N * N * 2 * N
-if os.environ['OPENBLAS_NUM_THREADS'] == '1':
+if 'OPENBLAS_NUM_THREADS' in os.environ and os.environ['OPENBLAS_NUM_THREADS'] == '1':
     print(f'Numpy Python: {N} * {N} Matrix Multiplication Single-Thread')
 else:
     print(f'Numpy Python: {N} * {N} Matrix Multiplication Multi-Thread')
