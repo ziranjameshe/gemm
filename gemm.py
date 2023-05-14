@@ -2,8 +2,6 @@
 
 import time
 import os
-
-os.environ['OPENBLAS_NUM_THREADS'] = '1'
 import numpy as np
 
 N     = 1024
@@ -30,10 +28,13 @@ else:
 
 # floating point operation
 flop = N * N * 2 * N
-print(f'Numpy Python: {N} * {N} Matrix Multiplication')
+if os.environ['OPENBLAS_NUM_THREADS'] == '1':
+    print(f'Numpy Python: {N} * {N} Matrix Multiplication Single-Thread')
+else:
+    print(f'Numpy Python: {N} * {N} Matrix Multiplication Multi-Thread')
 print(f'{flop / 1e9:.2f} GFLOP')
 
-for i in range(2):
+for i in range(4):
     start_time = time.monotonic()
     C = A @ B
     end_time   = time.monotonic()
