@@ -6,8 +6,10 @@
 
 #include "utility.h"
 #include "algo/simple_matrix_multiplication.h"
+#include "algo/cache_aware_matrix_multiplication.h"
 #include "algo/block_matrix_multiplication.h"
 #include "algo/apple_silicon_AMX_matrix_multiplication.h"
+#include "algo/can_we_do_better.h"
 
 float A[N][N];
 float B[N][N];
@@ -23,12 +25,19 @@ int main() {
     double flop  = N * N * 2.0 * N;
     printf("%.2f GFLOP\n\n", flop / 1e9);
 
-    // printf("Simple Matrix Multiplication\n");
-    // for (int i = 0; i < NUM_TEST; i++) {
-    //     read_matrix_data(A, B, C, C_python);
-    //     simple_matrix_multiplication(A, B, C);
-    // }
-    // validate_results(C, C_python);
+    printf("Simple Matrix Multiplication\n");
+    for (int i = 0; i < NUM_TEST; i++) {
+        read_matrix_data(A, B, C, C_python);
+        simple_matrix_multiplication(A, B, C);
+    }
+    validate_results(C, C_python);
+
+    printf("Cache Aware Matrix Multiplication\n");
+    for (int i = 0; i < NUM_TEST; i++) {
+        read_matrix_data(A, B, C, C_python);
+        cache_aware_matrix_multiplication(A, B, C);
+    }
+    validate_results(C, C_python);
 
     printf("Block Matrix Multiplication\n");
     for (int i = 0; i < NUM_TEST; i++) {
@@ -43,5 +52,12 @@ int main() {
         apple_silicon_AMX_matrix_multiplication(A, B, C);
     }
     validate_results(C, C_python);
+
+    // printf("Can we do better Matrix Multiplication\n");
+    // for (int i = 0; i < NUM_TEST; i++) {
+    //     read_matrix_data(A, B, C, C_python);
+    //     can_we_do_better(A, B, C);
+    // }
+    // validate_results(C, C_python);
 
 }
