@@ -8,6 +8,7 @@ void cache_aware_matrix_multiplication(float A[N][N], float B[N][N], float C[N][
         for (int k = 0; k < N; k++) {
             for (int x = 0; x < N; x++) {
                 C[y][x] += A[y][k] * B[k][x];
+                // C[y][x] = simd_muladd(A[y][k], B[k][x], C[y][x]);
             }
         }
     }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <simd/matrix.h>
+#include <simd/math.h>
 // #include </Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers/vDSP.h>
 
 #include "utility.h"
@@ -9,7 +10,7 @@
 #include "algo/cache_aware_matrix_multiplication.h"
 #include "algo/block_matrix_multiplication.h"
 #include "algo/apple_silicon_AMX_matrix_multiplication.h"
-#include "algo/can_we_do_better.h"
+#include "algo/simd_muladd_with_simd_float16.h"
 
 float A[N][N];
 float B[N][N];
@@ -53,11 +54,11 @@ int main() {
     }
     validate_results(C, C_python);
 
-    // printf("Can we do better Matrix Multiplication\n");
-    // for (int i = 0; i < NUM_TEST; i++) {
-    //     read_matrix_data(A, B, C, C_python);
-    //     can_we_do_better(A, B, C);
-    // }
-    // validate_results(C, C_python);
+    printf("SIMD MULADD AVX Matrix Multiplication\n");
+    for (int i = 0; i < NUM_TEST; i++) {
+        read_matrix_data(A, B, C, C_python);
+        simd_muladd_with_simd_float16(A, B, C);
+    }
+    validate_results(C, C_python);
 
 }
