@@ -3,7 +3,7 @@
 import time
 import os
 
-os.environ['OPENBLAS_NUM_THREADS'] = '1'
+# os.environ['OPENBLAS_NUM_THREADS'] = '1'
 import numpy as np
 
 N = 1024
