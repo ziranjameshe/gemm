@@ -3,6 +3,8 @@ name: GEMM PR Pre-checkin
 on:
   pull_request:
     branches: [master]
+  push:
+    branches: [master]
 
 jobs:
   run_gemm:
