@@ -1,0 +1,15 @@
+name: GEMM PR Pre-checkin
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  run_gemm:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: pwd
+      - run: ./go.sh
+      - run: ls
+
