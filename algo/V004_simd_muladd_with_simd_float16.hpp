@@ -2,9 +2,7 @@
 // __tg_fma
 // simd_muladd
 
-const int SIMD_SIZE = 16;
-
-void simd_muladd_with_simd_float16(float A[N][N], float B[N][N], float C[N][N]) {
+void V004_simd_muladd_with_simd_float16(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
 
     uint64_t start_time_nano, end_time_nano, used_time_nano;
     start_time_nano = get_time_nanos();
@@ -18,14 +16,14 @@ void simd_muladd_with_simd_float16(float A[N][N], float B[N][N], float C[N][N]) 
 
                 // Load C_f16
                 for (int x = simd_x; x < simd_x + SIMD_SIZE; x++) {
-                    C_f16[x - simd_x] = C[y][x];
+                    C_f16[x - simd_x] = matrix_C_cpp[y * N + x];
                 }
 
                 // Load A_f16, B_f16
                 for (int k = simd_k; k < simd_k + SIMD_SIZE; k++) {
                     for (int x = simd_x; x < simd_x + SIMD_SIZE; x++) {
-                        A_f16[x - simd_x] = A[y][k];
-                        B_f16[x - simd_x] = B[k][x];
+                        A_f16[x - simd_x] = matrix_A[y * N + k];
+                        B_f16[x - simd_x] = matrix_B[k * N + x];
                     }
 
                     // Compute
@@ -34,7 +32,7 @@ void simd_muladd_with_simd_float16(float A[N][N], float B[N][N], float C[N][N]) 
 
                 // Store
                 for (int x = simd_x; x < simd_x + SIMD_SIZE; x++) {
-                    C[y][x] = C_f16[x - simd_x];
+                    matrix_C_cpp[y * N + x] = C_f16[x - simd_x];
                 }
 
             }

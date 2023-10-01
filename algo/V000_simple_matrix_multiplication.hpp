@@ -1,15 +1,17 @@
 
-void cache_aware_matrix_multiplication(float A[N][N], float B[N][N], float C[N][N]) {
+void V000_simple_matrix_multiplication(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
 
     uint64_t start_time_nano, end_time_nano, used_time_nano;
     start_time_nano = get_time_nanos();
 
+    float acc;
     for (int y = 0; y < N; y++) {
-        for (int k = 0; k < N; k++) {
-            for (int x = 0; x < N; x++) {
-                C[y][x] += A[y][k] * B[k][x];
-                // C[y][x] = simd_muladd(A[y][k], B[k][x], C[y][x]);
+        for (int x = 0; x < N; x++) {
+            acc = 0;
+            for (int k = 0; k < N; k++) {
+                acc += matrix_A[y * N + k] * matrix_B[k * N + x];
             }
+            matrix_C_cpp[y * N + x] = acc;
         }
     }
 

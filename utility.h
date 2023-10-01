@@ -1,10 +1,5 @@
 
-const int NUM_TEST  = 4;
-
-const int N         = 1024;
-const int BLOCK     = 32;
-const int AMX_BLOCK = 4;
-// #define DEBUG
+#include "data_type.hpp"
 
 uint64_t get_time_nanos() {
     struct timespec start;
@@ -12,25 +7,47 @@ uint64_t get_time_nanos() {
     return (uint64_t)start.tv_sec * 1000000000 + (uint64_t)start.tv_nsec;
 }
 
-void validate_results(float C_C[N][N], float C_python[N][N]) {
+
+void read_matrix_data(float *matrix_A, float *matrix_B, float *matrix_C_cpp, float *matrix_C_python) {
+
+    FILE *read_file = fopen("/tmp/gemm_data", "rb");
+
+    if (read_file == NULL) {
+        printf("please pregenerate python /tmp/gemm_data file\n");
+        exit(1);
+    }
+
+    fread(matrix_A,        sizeof(float), N * N, read_file);
+    fread(matrix_B,        sizeof(float), N * N, read_file);
+    fread(matrix_C_python, sizeof(float), N * N, read_file);
+
+    memset(matrix_C_cpp, 0.0, sizeof(float) * N * N);
+
+    fclose(read_file);
+
+}
+
+void validate_results(float *matrix_C_cpp, float *matrix_C_python) {
 
     bool match = true;
 
-    for (int y = 0; y < N; y++) {
-        for (int x = 0; x < N; x++) {
-
-            if (fabs(C_C[y][x] - C_python[y][x]) > 1e-3) {
-                printf("MISMATCH AT [%d][%d], %.3f != %.3f\n", y, x, C_C[y][x], C_python[y][x]);
-                match = false;
-                #ifndef DEBUG
-                    exit(-1);
-                #endif
-            } else {
-                #ifdef DEBUG
-                    printf("AT [%d][%d], C++ %.3f == PYTHON %.3f\n", y, x, C_C[y][x], C_python[y][x]);
-                #endif
-            }
-
+    for (int i = 0; i < N * N; i++) {
+        if (fabs(matrix_C_cpp[i] - matrix_C_python[i]) > 1e-3 || isnan(*(matrix_C_cpp + i)) == true) {
+            printf(
+                "MISMATCH AT [%d], %.3f != %.3f, difference = %.3f\n",
+                i,
+                matrix_C_cpp[i],
+                matrix_C_python[i],
+                fabs(matrix_C_cpp[i] - matrix_C_python[i])
+            );
+            match = false;
+            #ifndef DEBUG
+                exit(-1);
+            #endif
+        } else {
+            #ifdef DEBUG
+                printf("AT [%d], C++ %.3f == PYTHON %.3f\n", i, matrix_C_cpp[i], matrix_C_python[i]);
+            #endif
         }
     }
 
@@ -39,37 +56,4 @@ void validate_results(float C_C[N][N], float C_python[N][N]) {
     } else {
         printf("MISMATCH!\n\n");
     }
-}
-
-void read_matrix_data(float A[N][N], float B[N][N], float C[N][N], float C_python[N][N]) {
-
-    FILE *read_file = fopen("/tmp/gemm_data", "rb");
-    if (read_file == NULL) {
-        printf("please pregenerate python /tmp/gemm_data file\n");
-        exit(1);
-    }
-
-    fread(A,        1, sizeof(float) * N * N, read_file);
-    fread(B,        1, sizeof(float) * N * N, read_file);
-    fread(C_python, 1, sizeof(float) * N * N, read_file);
-
-    for (int y = 0; y < N; y++) {
-        for (int x = 0; x < N; x++) {
-            C[y][x] = 0.0;
-        }
-    }
-
-    fclose(read_file);
-
-}
-
-void print_simd_float4x4(simd_float4x4 matrix) {
-
-    for (int y = 0; y < AMX_BLOCK; y++) {
-        for (int x = 0; x < AMX_BLOCK; x++){
-            printf("%f ", matrix.columns[x][y]);
-        }
-        printf("\n");
-    }
-    printf("\n");
 }

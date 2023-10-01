@@ -1,4 +1,4 @@
-void block_matrix_multiplication(float A[N][N], float B[N][N], float C[N][N]) {
+void V002_block_matrix_multiplication(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
 
     uint64_t start_time_nano, end_time_nano, used_time_nano;
     start_time_nano = get_time_nanos();
@@ -12,10 +12,9 @@ void block_matrix_multiplication(float A[N][N], float B[N][N], float C[N][N]) {
                     for (int x = bx; x < bx + BLOCK; x++) {
                         acc = 0;
                         for (int k = bk; k < bk + BLOCK; k++) {
-                            acc += A[y][k] * B[k][x];
-                            // acc = fmaf(A[y][k], B[k][x], acc);
+                            acc += matrix_A[y * N + k] * matrix_B[k * N + x];
                         }
-                        C[y][x] += acc;
+                        matrix_C_cpp[y * N + x] += acc;
                     }
                 }
 
