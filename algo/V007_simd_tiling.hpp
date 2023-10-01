@@ -20,13 +20,12 @@ void V007_simd_tiling(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
                 C_f16[k] = 0.0f;
             }
 
+            for (int x_y = 0; x_y < N; x_y++) {
 
-            for (int x = 0; x < N; x++) {
-
-                // Load A
+                // Load A and B
                 for (int k = 0; k < TILING_BLOCK; k++) {
-                    A_f16[k] = matrix_A[i * N + x];
-                    B_f16[k] = matrix_B[x * N + j + k];
+                    A_f16[k] = matrix_A[i * N + x_y];
+                    B_f16[k] = matrix_B[x_y * N + j + k];
                 }
 
                 // Compute
