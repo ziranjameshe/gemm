@@ -1,3 +1,5 @@
+static_assert(N % BLOCK == 0);
+
 void V002_block_matrix_multiplication(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
 
     uint64_t start_time_nano, end_time_nano, used_time_nano;

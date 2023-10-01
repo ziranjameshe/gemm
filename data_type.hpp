@@ -7,3 +7,8 @@
 
 #define TILING_BLOCK 16
 // #define DEBUG
+// #ifdef DEBUG
+//     #define N 4
+//     #define TILING_BLOCK 2
+//     #define BLOCK        2
+// #endif

@@ -4,10 +4,14 @@ void V001_cache_aware_matrix_multiplication(float *matrix_A, float *matrix_B, fl
     uint64_t start_time_nano, end_time_nano, used_time_nano;
     start_time_nano = get_time_nanos();
 
-    for (int y = 0; y < N; y++) {
-        for (int k = 0; k < N; k++) {
-            for (int x = 0; x < N; x++) {
-                matrix_C_cpp[y * N + x] += matrix_A[y * N + k] * matrix_B[k * N + x];
+    for (int i = 0; i < N; i++) {
+
+        for (int j = 0; j < N; j++) {
+
+            for (int k = 0; k < N; k++) {
+
+                matrix_C_cpp[i * N + k] += matrix_A[i * N + j] * matrix_B[j * N + k];
+
             }
         }
     }

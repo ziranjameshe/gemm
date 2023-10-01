@@ -1,5 +1,4 @@
 
-#include <vecLib/vDSP.h>
 void V006_vDSP_mmul(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
 
     uint64_t start_time_nano, end_time_nano, used_time_nano;

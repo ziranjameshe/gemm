@@ -1,8 +1,6 @@
 // simd_float16
 // __tg_fma
 // simd_muladd
-#include <simd/math.h>
-#include <vecLib/vDSP.h>
 
 void V005_simd_muladd_with_simd_float16_v2(float *matrix_A, float *matrix_B, float *matrix_C_cpp) {
 
