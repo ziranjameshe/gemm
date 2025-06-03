@@ -7,7 +7,6 @@
 
 #include <simd/math.h>
 #include <vecLib/vDSP.h>
-#include <vecLib/vDSP.h>
 #include <simd/vector_make.h>
 
 #include "utility.h"
